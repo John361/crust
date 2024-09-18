@@ -1,3 +1,5 @@
+use std::process::Command;
+
 use chrono::{DateTime, Local, Timelike};
 use serde::Deserialize;
 
@@ -8,15 +10,20 @@ pub struct Tasks {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Task {
-    pub schedule: Schedule,
     pub command: String,
+    pub schedule: Schedule,
 }
 
 impl Task {
-    pub fn execute(&self) {
+    pub fn execute(&self) -> anyhow::Result<()> {
         if self.schedule.is_time() {
-            println!("{}", self.command);
+            Command::new("sh")
+                .arg("-c")
+                .arg(&self.command)
+                .spawn()?;
         }
+
+        Ok(())
     }
 }
 

@@ -1,12 +1,12 @@
 tasks:
-  - command: "hello world"
+  - command: "echo 'hello world'"
     schedule:
-      hour: 22
-      minute: 58
+      hour: 23
+      minute: 06
       second: 05
 
-  - command: "foo bar"
+  - command: "lse /tmp"
     schedule:
-      hour: 22
-      minute: 58
+      hour: 23
+      minute: 06
       second: 10

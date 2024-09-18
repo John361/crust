@@ -7,7 +7,7 @@ fn main() -> anyhow::Result<()> {
         std::thread::sleep(std::time::Duration::from_secs(1));
 
         for task in &config.tasks {
-            task.execute(); // TODO: open new thread for execution
+            task.execute()?; // TODO: open new thread for execution
         }
     }
 }
