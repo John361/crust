@@ -1,12 +1,13 @@
 use crust_lib::config::CrustConfig;
 use crust_lib::task::TaskStatus;
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
     log4rs::init_file("config/log4rs.yaml", Default::default())?;
     let config = CrustConfig::load()?;
 
     loop {
-        std::thread::sleep(std::time::Duration::from_secs(1));
+        tokio::time::sleep(std::time::Duration::from_secs(1)).await;
 
         for task in &config.tasks {
             let result = task.execute()?; // TODO: open new thread for execution
@@ -16,7 +17,9 @@ fn main() -> anyhow::Result<()> {
                 }
 
                 TaskStatus::Error(error) => {
-                    log::error!("Task execution error: {}", error);
+                    let message = format!("Task execution error: {}", error);
+                    log::error!("{}", message);
+                    config.notifiers.notify("Crusty".to_string(), message).await?;
                 }
 
                 TaskStatus::NotReady => {}

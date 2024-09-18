@@ -1,12 +1,22 @@
 tasks:
   - command: "echo 'hello world'"
     schedule:
-      hour: 23
-      minute: 06
-      second: 05
+      hour: 00
+      minute: 00
+      second: 00
 
   - command: "lse /tmp"
     schedule:
-      hour: 23
-      minute: 06
-      second: 10
+      hour: 00
+      minute: 12
+      second: 00
+
+notifiers:
+  # Email attribute is mandatory but not sub attributes
+  email:
+    host: "smtp.gmail.com"
+    port: 465
+    username: "xxx@gmail.com"
+    password: "xxx"
+    from: "xxx@gmail.com"
+    to: "xxx@gmail.com"

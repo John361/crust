@@ -1,11 +1,13 @@
 use anyhow::Context;
 use serde::Deserialize;
 
+use crate::notifier::notifiers::Notifiers;
 use crate::task::Task;
 
 #[derive(Debug, Deserialize)]
 pub struct CrustConfig {
     pub tasks: Vec<Task>,
+    pub notifiers: Notifiers
 }
 
 impl CrustConfig {
@@ -19,7 +21,7 @@ impl CrustConfig {
 
         let crust_config = config
             .try_deserialize::<CrustConfig>()
-            .context("Failed to deserialize into AppConfig")?;
+            .context("Failed to deserialize into CrustConfig")?;
 
         Ok(crust_config)
     }

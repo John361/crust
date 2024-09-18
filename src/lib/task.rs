@@ -58,5 +58,5 @@ impl Schedule {
 pub enum TaskStatus {
     NotReady,
     Success,
-    Error(String)
+    Error(String),
 }
