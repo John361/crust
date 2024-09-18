@@ -1,0 +1,12 @@
+tasks:
+  - command: "hello world"
+    schedule:
+      hour: 22
+      minute: 58
+      second: 05
+
+  - command: "foo bar"
+    schedule:
+      hour: 22
+      minute: 58
+      second: 10
