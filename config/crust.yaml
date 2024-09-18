@@ -8,11 +8,10 @@ tasks:
   - command: "lse /tmp"
     schedule:
       hour: 00
-      minute: 12
+      minute: 00
       second: 00
 
 notifiers:
-  # Email attribute is mandatory but not sub attributes
   email:
     host: "smtp.gmail.com"
     port: 465

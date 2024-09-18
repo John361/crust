@@ -19,7 +19,10 @@ async fn main() -> anyhow::Result<()> {
                 TaskStatus::Error(error) => {
                     let message = format!("Task execution error: {}", error);
                     log::error!("{}", message);
-                    config.notifiers.notify("Crusty".to_string(), message).await?;
+
+                    if let Some(notifiers) = &config.notifiers {
+                        notifiers.notify("Crusty".to_string(), message).await?;
+                    }
                 }
 
                 TaskStatus::NotReady => {}

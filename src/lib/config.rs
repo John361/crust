@@ -7,7 +7,7 @@ use crate::task::Task;
 #[derive(Debug, Deserialize)]
 pub struct CrustConfig {
     pub tasks: Vec<Task>,
-    pub notifiers: Notifiers
+    pub notifiers: Option<Notifiers>,
 }
 
 impl CrustConfig {
