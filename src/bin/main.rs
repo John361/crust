@@ -1,6 +1,4 @@
-mod task;
-
-use crate::task::{Schedule, Task, Tasks};
+use crust_lib::task::{Schedule, Task, Tasks};
 
 fn main() {
     let schedule1 = Schedule { hour: 22, minute: 44, second: 30 };
