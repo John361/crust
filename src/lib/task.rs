@@ -9,7 +9,7 @@ pub struct Tasks {
     pub tasks: Vec<Task>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Task {
     pub command: String,
     pub schedule: Schedule,
@@ -41,7 +41,7 @@ impl Task {
     }
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct Schedule {
     pub hour: u32,
     pub minute: u32,
