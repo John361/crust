@@ -2,6 +2,7 @@ use crust_lib::config::CrustConfig;
 use crust_lib::task::TaskStatus;
 
 fn main() -> anyhow::Result<()> {
+    log4rs::init_file("config/log4rs.yaml", Default::default())?;
     let config = CrustConfig::load()?;
 
     loop {
@@ -11,11 +12,11 @@ fn main() -> anyhow::Result<()> {
             let result = task.execute()?; // TODO: open new thread for execution
             match result {
                 TaskStatus::Success => {
-                    println!("Task successfully executed.");
+                    log::info!("Task successfully executed.");
                 }
 
                 TaskStatus::Error(error) => {
-                    println!("Task execution error: {}", error);
+                    log::error!("Task execution error: {}", error);
                 }
 
                 TaskStatus::NotReady => {}
