@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 use crate::notifier::email::Email;
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Notifiers {
     email: Option<Email>,
 }

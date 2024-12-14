@@ -10,23 +10,29 @@ async fn main() -> anyhow::Result<()> {
         tokio::time::sleep(std::time::Duration::from_secs(1)).await;
 
         for task in &config.tasks {
-            let result = task.execute()?; // TODO: open new thread for execution
-            match result {
-                TaskStatus::Success => {
-                    log::info!("Task successfully executed.");
-                }
+            let task = task.clone();
+            let notifiers = config.notifiers.clone();
 
-                TaskStatus::Error(error) => {
-                    let message = format!("Task execution error: {}", error);
-                    log::error!("{}", message);
-
-                    if let Some(notifiers) = &config.notifiers {
-                        notifiers.notify("Crusty".to_string(), message).await?;
+            tokio::task::spawn(async move {
+                let result = task.execute().expect("Task execution failed");
+                match result {
+                    TaskStatus::Success => {
+                        log::info!("Task successfully executed.");
                     }
-                }
 
-                TaskStatus::NotReady => {}
-            }
+                    TaskStatus::Error(error) => {
+                        let message = format!("Task execution error: {}", error);
+                        log::error!("{}", message);
+
+                        if let Some(notifiers) = notifiers {
+                            notifiers.notify("Crusty".to_string(), message).await
+                                .expect("Failed to notify");
+                        }
+                    }
+
+                    TaskStatus::NotReady => {}
+                }
+            });
         }
     }
 }
