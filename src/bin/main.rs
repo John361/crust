@@ -5,7 +5,7 @@ use crust_lib::task::TaskStatus;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    log4rs::init_file("config/log4rs.yaml", Default::default())?;
+    build_logger()?;
     let config = build_config()?;
 
     loop {
@@ -39,13 +39,24 @@ async fn main() -> anyhow::Result<()> {
     }
 }
 
+fn build_logger() -> anyhow::Result<()> {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() > 1 {
+        log4rs::init_file(&args[1], Default::default())?; // TODO: implement named arguments
+        Ok(())
+    } else {
+        anyhow::bail!("Log path must be at first argument")
+    }
+}
+
 fn build_config() -> anyhow::Result<CrustConfig> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() > 1 {
-        let config = CrustConfig::load(&args[1])?;
+        let config = CrustConfig::load(&args[2])?; // TODO: implement named arguments
         Ok(config)
     } else {
-        anyhow::bail!("Configuration path must be at first argument")
+        anyhow::bail!("Configuration path must be at second argument")
     }
 }
