@@ -11,9 +11,7 @@ pub struct CrustConfig {
 }
 
 impl CrustConfig {
-    pub fn load() -> anyhow::Result<Self> {
-        let path = "config/crust.yaml";
-
+    pub fn load(path: &str) -> anyhow::Result<Self> {
         let config = config::Config::builder()
             .add_source(config::File::with_name(path))
             .build()
