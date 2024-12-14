@@ -1,15 +1,15 @@
 tasks:
   - command: "echo 'hello world'"
     schedule:
-      hour: 00
-      minute: 00
-      second: 00
+      hour: "*"
+      minute: "*"
+      second: "*"
 
   - command: "lse /tmp"
     schedule:
-      hour: 00
-      minute: 00
-      second: 00
+      hour: "14"
+      minute: "*"
+      second: "*"
 
 notifiers:
   email:

@@ -43,15 +43,43 @@ impl Task {
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Schedule {
-    pub hour: u32,
-    pub minute: u32,
-    pub second: u32,
+    hour: String,
+    minute: String,
+    second: String,
 }
 
 impl Schedule {
     pub fn is_time(&self) -> bool {
         let now: DateTime<Local> = Local::now();
-        now.hour() == self.hour && now.minute() == self.minute && now.second() == self.second
+        let hour = self.hour_as_u32_or_default(now).expect("Cannot convert hour");
+        let minute = self.minute_as_u32_or_default(now).expect("Cannot convert minute");
+        let second = self.second_as_u32_or_default(now).expect("Cannot convert second");
+
+        now.hour() == hour && now.minute() == minute && now.second() == second
+    }
+
+    fn hour_as_u32_or_default(&self, now: DateTime<Local>) -> Option<u32> {
+        if self.hour == "*" {
+            Some(now.hour())
+        } else {
+            self.hour.parse::<u32>().ok()
+        }
+    }
+
+    fn minute_as_u32_or_default(&self, now: DateTime<Local>) -> Option<u32> {
+        if self.minute == "*" {
+            Some(now.minute())
+        } else {
+            self.minute.parse::<u32>().ok()
+        }
+    }
+
+    fn second_as_u32_or_default(&self, now: DateTime<Local>) -> Option<u32> {
+        if self.second == "*" {
+            Some(now.second())
+        } else {
+            self.second.parse::<u32>().ok()
+        }
     }
 }
 
