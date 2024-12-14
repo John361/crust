@@ -1,12 +1,13 @@
-use std::env;
-
+use crust_lib::cli::Cli;
 use crust_lib::config::CrustConfig;
 use crust_lib::task::TaskStatus;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    build_logger()?;
-    let config = build_config()?;
+    let args = Cli::load();
+
+    log4rs::init_file(&args.log_path, Default::default())?;
+    let config = CrustConfig::load(&args.config_path)?;
 
     loop {
         tokio::time::sleep(std::time::Duration::from_secs(1)).await;
@@ -36,27 +37,5 @@ async fn main() -> anyhow::Result<()> {
                 }
             });
         }
-    }
-}
-
-fn build_logger() -> anyhow::Result<()> {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() > 1 {
-        log4rs::init_file(&args[1], Default::default())?; // TODO: implement named arguments
-        Ok(())
-    } else {
-        anyhow::bail!("Log path must be at first argument")
-    }
-}
-
-fn build_config() -> anyhow::Result<CrustConfig> {
-    let args: Vec<String> = env::args().collect();
-
-    if args.len() > 1 {
-        let config = CrustConfig::load(&args[2])?; // TODO: implement named arguments
-        Ok(config)
-    } else {
-        anyhow::bail!("Configuration path must be at second argument")
     }
 }
