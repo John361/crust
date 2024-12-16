@@ -3,7 +3,7 @@ Description=Crust service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/sbin/crust /etc/crust/log4rs.yaml /etc/crust/crust.yaml
+ExecStart=/usr/local/sbin/crust --config-path /etc/crust/log4rs.yaml --log-path /etc/crust/crust.yaml
 Restart=always
 User=root
 Group=root
